@@ -3,9 +3,7 @@ from tkinter import filedialog, messagebox
 from PIL import Image, ImageTk, ImageOps
 import math
 
-# ==================================================
-# 1. COLORS - CATPPUCCIN MOCHA
-# ==================================================
+# COLORS
 
 BG = "#1e1e2e"
 PANEL = "#181825"
@@ -17,9 +15,7 @@ PEACH = "#fab387"
 GREEN = "#a6e3a1"
 MUTED = "#a6adc8"
 
-# ==================================================
-# 2. VARIABLES
-# ==================================================
+# VARIABLES
 
 original_image = None
 current_image = None
@@ -27,9 +23,7 @@ image_photo = None
 
 matrix_entries = []
 
-# ==================================================
-# 3. MAIN WINDOW
-# ==================================================
+# MAIN WINDOW
 
 root = tk.Tk()
 root.title("Linear Algebra - Image Processor")
@@ -37,9 +31,7 @@ root.geometry("1350x850")
 root.minsize(1100, 750)
 root.configure(bg=BG)
 
-# ==================================================
-# 4. MAIN LAYOUT
-# ==================================================
+# MAIN LAYOUT
 
 sidebar = tk.Frame(root, bg=BG, width=390)
 sidebar.pack(side="left", fill="y", padx=15, pady=15)
@@ -49,9 +41,7 @@ workspace = tk.Frame(root, bg=PANEL)
 workspace.pack(side="right", fill="both", expand=True,
                padx=(0, 15), pady=15)
 
-# ==================================================
-# 5. TITLE
-# ==================================================
+# TITLE
 
 tk.Label(
     sidebar,
@@ -69,9 +59,7 @@ tk.Label(
     fg=MUTED
 ).pack(anchor="w", pady=(3, 15))
 
-# ==================================================
-# 6. HELPER FUNCTIONS
-# ==================================================
+# HELPER FUNCTIONS
 
 def make_button(parent, text, command, color=TEXT):
 
@@ -100,9 +88,7 @@ def set_output(text):
     output_box.config(state="disabled")
 
 
-# ==================================================
-# 7. IMAGE PREVIEW
-# ==================================================
+# IMAGE PREVIEW
 
 preview_label = tk.Label(
     workspace,
@@ -120,7 +106,6 @@ def show_image(img):
     global image_photo
 
     preview = img.copy()
-
     preview.thumbnail((900, 760))
 
     image_photo = ImageTk.PhotoImage(preview)
@@ -133,9 +118,7 @@ def show_image(img):
     preview_label.image = image_photo
 
 
-# ==================================================
-# 8. IMAGE VALIDATION
-# ==================================================
+# IMAGE VALIDATION
 
 def has_image():
 
@@ -151,9 +134,7 @@ def has_image():
     return True
 
 
-# ==================================================
-# 9. OPEN IMAGE
-# ==================================================
+# OPEN IMAGE
 
 def open_image():
 
@@ -189,9 +170,7 @@ def open_image():
         messagebox.showerror("Image Error", str(error))
 
 
-# ==================================================
-# 10. BASIC IMAGE OPERATIONS
-# ==================================================
+# BASIC IMAGE OPERATIONS
 
 def grayscale():
 
@@ -287,9 +266,7 @@ def save_image():
             messagebox.showerror("Save Error", str(error))
 
 
-# ==================================================
-# 11. MATRIX EDITOR
-# ==================================================
+# MATRIX EDITOR
 
 matrix_frame = tk.LabelFrame(
     sidebar,
@@ -301,9 +278,6 @@ matrix_frame = tk.LabelFrame(
 )
 
 matrix_frame.pack(fill="x", pady=10)
-
-
-# Create 3x3 editable matrix
 
 for row in range(3):
 
@@ -330,8 +304,6 @@ for row in range(3):
             ipady=5
         )
 
-        # Identity Matrix as default
-
         entry.insert(
             0,
             "1" if row == col else "0"
@@ -342,9 +314,7 @@ for row in range(3):
     matrix_entries.append(row_entries)
 
 
-# ==================================================
-# 12. READ MATRIX
-# ==================================================
+# READ MATRIX
 
 def get_matrix():
 
@@ -368,9 +338,7 @@ def get_matrix():
     return matrix
 
 
-# ==================================================
-# 13. DISPLAY MATRIX
-# ==================================================
+# DISPLAY MATRIX
 
 def format_matrix(matrix):
 
@@ -392,9 +360,7 @@ def update_matrix_entries(matrix):
             entry.insert(0, str(matrix[i][j]))
 
 
-# ==================================================
-# 14. MATRIX IDENTITY
-# ==================================================
+# IDENTITY MATRIX
 
 def identity_matrix():
 
@@ -413,9 +379,7 @@ def identity_matrix():
     )
 
 
-# ==================================================
-# 15. MATRIX DETERMINANT
-# ==================================================
+# MATRIX DETERMINANT
 
 def determinant():
 
@@ -459,9 +423,7 @@ def determinant():
         )
 
 
-# ==================================================
-# 16. MATRIX TRANSPOSE
-# ==================================================
+# MATRIX TRANSPOSE
 
 def transpose():
 
@@ -490,17 +452,13 @@ def transpose():
         )
 
 
-# ==================================================
-# 17. MATRIX MULTIPLICATION
-# ==================================================
+# MATRIX MULTIPLICATION
 
 def multiply_matrices():
 
     try:
 
         A = get_matrix()
-
-        # Create a second matrix B
 
         window = tk.Toplevel(root)
         window.title("Matrix B")
@@ -564,8 +522,6 @@ def multiply_matrices():
                 ):
                     raise ValueError
 
-                # Matrix multiplication A x B
-
                 result = [
                     [
                         sum(
@@ -610,9 +566,7 @@ def multiply_matrices():
         )
 
 
-# ==================================================
-# 18. APPLY MATRIX TO IMAGE
-# ==================================================
+# APPLY MATRIX TO IMAGE
 
 def apply_matrix():
 
@@ -624,9 +578,6 @@ def apply_matrix():
     try:
 
         A = get_matrix()
-
-        # Pillow uses 12 coefficients:
-        # 9 matrix values + 3 offsets
 
         coefficients = (
             A[0][0], A[0][1], A[0][2], 0,
@@ -661,9 +612,7 @@ def apply_matrix():
         )
 
 
-# ==================================================
-# 19. MATRIX PRESETS
-# ==================================================
+# MATRIX PRESETS
 
 def set_warm():
 
@@ -704,9 +653,7 @@ def set_sepia():
     set_output("SEPIA MATRIX\n\n" + format_matrix(matrix))
 
 
-# ==================================================
-# 20. BUTTONS - IMAGE OPERATIONS
-# ==================================================
+# IMAGE OPERATIONS
 
 image_frame = tk.LabelFrame(
     sidebar,
@@ -745,9 +692,7 @@ image_frame.columnconfigure(0, weight=1)
 image_frame.columnconfigure(1, weight=1)
 
 
-# ==================================================
-# 21. BUTTONS - MATRIX OPERATIONS
-# ==================================================
+# MATRIX OPERATIONS
 
 matrix_operations = tk.LabelFrame(
     sidebar,
@@ -786,9 +731,7 @@ matrix_operations.columnconfigure(0, weight=1)
 matrix_operations.columnconfigure(1, weight=1)
 
 
-# ==================================================
-# 22. MATRIX PRESETS
-# ==================================================
+# COLOR PRESETS
 
 preset_frame = tk.Frame(sidebar, bg=BG)
 preset_frame.pack(fill="x", pady=5)
@@ -817,9 +760,7 @@ make_button(
 ).pack(side="left", expand=True, fill="x", padx=2)
 
 
-# ==================================================
-# 23. MATHEMATICAL OUTPUT
-# ==================================================
+# MATHEMATICAL OUTPUT
 
 output_frame = tk.LabelFrame(
     sidebar,
@@ -854,8 +795,6 @@ output_box.insert(
 output_box.config(state="disabled")
 
 
-# ==================================================
-# 24. START APPLICATION
-# ==================================================
+# APPLICATION STARTUP
 
 root.mainloop()
